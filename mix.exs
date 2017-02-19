@@ -15,7 +15,7 @@ defmodule RateLimit.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     # Specify extra applications you'll use from Erlang/Elixir
-    [extra_applications: [:logger, :ex_rated, :plug, :gen_stage, :limiter,:poison],
+    [extra_applications: [:logger, :ex_rated, :plug, :gen_stage, :limiter,:poison, :recon],
      mod: {RateLimit.Application, []}]
   end
 
@@ -35,7 +35,8 @@ defmodule RateLimit.Mixfile do
     {:limiter, "~> 0.1.2"},
     {:cowboy, "~> 1.1"},
     {:statix, "~> 1.0"},
-    {:poison, "~> 3.1"}
+    {:poison, "~> 3.1"},
+    {:recon, "~> 2.3"}
   ]
   end
 end

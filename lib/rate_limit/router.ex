@@ -38,8 +38,8 @@ defmodule RateLimit.Router do
             true
         end
     end
-    RateLimit.Stats.increment("ex_rated", 1, [sample_rate: 0.2, tags: ["limited:#{limited}"]] )
-    RateLimit.Stats.histogram("ex_rated.t", (System.system_time(:microseconds) - start_time), sample_rate: 0.2  )
+    RateLimit.Stats.increment("ex_rated", 1, [sample_rate: 0.1, tags: ["limited:#{limited}"]] )
+    RateLimit.Stats.histogram("ex_rated.t", (System.system_time(:microseconds) - start_time), sample_rate: 0.1  )
     if limited do
       send_resp(conn, 429, "")
     else
@@ -55,13 +55,14 @@ defmodule RateLimit.Router do
       RateLimit.Limiter.limit(:multi_test)
     end
 
-    RateLimit.Stats.increment("multi", 1, [sample_rate: 0.2, tags: ["limited:#{limited}"]] )
-    RateLimit.Stats.histogram("multi.t", System.system_time(:microseconds) - start_time, sample_rate: 0.2  )
+    RateLimit.Stats.increment("multi", 1, [sample_rate: 0.1, tags: ["limited:#{limited}"]] )
+    RateLimit.Stats.histogram("multi.t", System.system_time(:microseconds) - start_time, sample_rate: 0.1  )
     if limited do
       send_resp(conn, 429, "")
     else
       send_resp(conn, 204,"")
     end
+
   end
   get "/gen_stage" do
 
