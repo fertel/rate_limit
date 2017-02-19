@@ -22,7 +22,7 @@ defmodule RateLimit.Application do
     opts = [strategy: :one_for_one, name: RateLimit.Supervisor]
     RateLimit.Stats.connect
     {:ok, pid} = Supervisor.start_link(children, opts)
-    RateLimit.Limiter.start_limiters(:multi_test, 3000)
+    RateLimit.Limiter.start_limiters(:multi_test, 1000)
     {:ok, pid}
   end
 end
