@@ -39,8 +39,8 @@ defmodule RateLimit.Router do
             true
         end
     end
-    RateLimit.Stats.increment("ex_rated", 1, [sample_rate: 0.1, tags: ["limited:#{limited}"]] )
-    RateLimit.Stats.histogram("ex_rated.t", (System.system_time(:microseconds) - start_time), sample_rate: 0.1  )
+    RateLimit.Stats.increment("ex_rated", 1, [sample_rate: 0.05, tags: ["limited:#{limited}"]] )
+    RateLimit.Stats.histogram("ex_rated.t", (System.system_time(:microseconds) - start_time), sample_rate: 0.05  )
     if limited do
       send_resp(conn, 429, "")
     else
@@ -56,8 +56,8 @@ defmodule RateLimit.Router do
       RateLimit.Limiter.limit(:multi_test)
     end
 
-    RateLimit.Stats.increment("multi", 1, [sample_rate: 0.1, tags: ["limited:#{limited}"]] )
-    RateLimit.Stats.histogram("multi.t", System.system_time(:microseconds) - start_time, sample_rate: 0.1  )
+    RateLimit.Stats.increment("multi", 1, [sample_rate: 0.05, tags: ["limited:#{limited}"]] )
+    RateLimit.Stats.histogram("multi.t", System.system_time(:microseconds) - start_time, sample_rate: 0.05 )
     if limited do
       send_resp(conn, 429, "")
     else
@@ -71,6 +71,7 @@ defmodule RateLimit.Router do
   #todo: gen_Stage leaky bucket
   def do_stuff do
     tasks = Enum.map(1..2, &Task.async(fn -> &1;
+      Process.sleep(2)
       Poison.decode! @json
     end))
     Task.yield_many(tasks, 10)
