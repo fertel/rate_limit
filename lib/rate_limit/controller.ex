@@ -49,7 +49,7 @@ defmodule RateLimit.Controller do
       if count do
         RateLimit.Limiter.start_limiters(key, count)
       else
-        RateLimit.Limiter.stop_limiters(key)
+        RateLimit.Limiter.stop(key)
       end
     end)
   end

@@ -26,12 +26,13 @@ defmodule RateLimit.Router do
 
   get "/ex_rated" do
     start_time  = System.system_time(:microseconds)
-    limited = case ExRated.inspect_bucket(:exrated_test, 100,100) do
+    config = Application.get_env(:rate_limit, :ex_rated)
+    limited = case apply(ExRated,:inspect_bucket,config) do
       {_,0,_,_,_}->
         true
       _->
         do_stuff
-        case ExRated.check_rate(:ex_rated_test, 100, 100) do
+        case apply(ExRated,:check_rate, config) do
           {:ok, _}->
             false
           {:error,_}->

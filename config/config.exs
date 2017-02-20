@@ -38,3 +38,5 @@ config :limiter,
 
 config :limiter, :limiter_con_cache,
   ttl_check: 1_000
+config :rate_limit,
+  ex_rated: [ :exrated_test, 100,  100]
