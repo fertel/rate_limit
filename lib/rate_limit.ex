@@ -6,7 +6,7 @@ defmodule RateLimit do
     RateLimit.Limiter.start_limiters(:multi_test, count)
   end
   def multi_backup_avg do
-    limiters = RateLimit.Limiters.load_limiter(:multi_test)
+    limiters = RateLimit.Limiter.load_limiters(:multi_test)
     Enum.reduce(limiters, 0,
       fn (pid, acc )-> :recon.info(pid)[:memory_used][:message_queue_len] + acc end) / length(limiters)
   end
