@@ -66,6 +66,7 @@ defmodule RateLimit.Controller do
     |> :pg2.get_members()
     |> Enum.each(fn
       (pid) when pid != self ->
+        Logger.debug "adding node"
         Process.monitor(pid)
         GenServer.call(pid, :register_controller)
       _-> :ok
