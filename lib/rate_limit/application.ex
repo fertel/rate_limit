@@ -7,7 +7,7 @@ defmodule RateLimit.Application do
 
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
-
+    :net_adm.ping(:test@demo1) #code for demo
     # Define workers and child supervisors to be supervised
     children = [
       # Starts a worker by calling: RateLimit.Worker.start_link(arg1, arg2, arg3)
@@ -22,7 +22,7 @@ defmodule RateLimit.Application do
     opts = [strategy: :one_for_one, name: RateLimit.Supervisor]
     RateLimit.Stats.connect
     {:ok, pid} = Supervisor.start_link(children, opts)
-    RateLimit.Limiter.start_limiters(:multi_test, 1000) #this is broken 
+    RateLimit.Limiter.start_limiters(:multi_test, 1000) #this is broken
     {:ok, pid}
   end
 end

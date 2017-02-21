@@ -23,7 +23,12 @@ defmodule RateLimit.Controller do
     update_pool(state)
     {:reply, :ok, state}
   end
+  def handle_call(:stop,_from, state) do
+
+    {:stop, :normal, state}
+  end
   def handle_info({:DOWN, _, _, _, _}, state) do
+    Logger.debug "controller down "
     update_pool(state)
     {:noreply, state}
   end

@@ -10,10 +10,10 @@ defmodule RateLimit.Limiter do
     :wait_until, :previous_in]
 
 
-  def start_limiters(name,count, node_count  \\ 1) do
+  def start_limiters(name,limit, node_count  \\ 1) do
     #:erlang.system_info :schedulers # decide this based on count
 
-    state = build_state(name, count, node_count)
+    state = build_state(name, limit, node_count)
     case :ets.lookup(:rate_limiter_count, name) do
       [{_, count}]->
         cond do
@@ -142,9 +142,9 @@ defmodule RateLimit.Limiter do
     end
   end
   #need a good explanation for these numbers
-  def build_state(name, count, node_count) do
-    Logger.debug "building state for #{name} with qps #{count} and node_count #{node_count}"
-    node_qps = div(count, node_count)
+  def build_state(name, limit, node_count) do
+    Logger.debug "building state for #{name} with qps #{limit} and node_count #{node_count}"
+    node_qps = div(limit, node_count)
     node_qps = node_qps > 0 && node_qps || 1
     period  =  div(1000, node_qps)
     if period  <= 100 do
