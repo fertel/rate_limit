@@ -26,7 +26,7 @@ defmodule RateLimit.Limiter do
         count < state.limiter_count ->
           Enum.each((count + 1).. state.limiter_count, fn (ix) ->
             RateLimit.LimiterSupervisor.start_child(%{state | ix: ix})
-            :timer.sleep(10)
+            :timer.sleep(3)
           end)
           :ets.insert(:rate_limiter_count, {name, state.limiter_count})
         true ->
