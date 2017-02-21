@@ -3,7 +3,7 @@ defmodule RateLimit do
     Application.put_env(:rate_limit, :ex_rated, [:exrated_test, duration, count] )
   end
   def update_limiters(count) do
-    RateLimit.Limiter.start_limiters(:multi_test, count)
+    RateLimit.Controller.start_limiters(:multi_test, count)
   end
   def multi_backup_avg do
     limiters = RateLimit.Limiter.load_limiters(:multi_test)
