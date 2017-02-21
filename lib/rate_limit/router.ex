@@ -71,7 +71,6 @@ defmodule RateLimit.Router do
   #todo: gen_Stage leaky bucket
   def do_stuff do
     tasks = Enum.map(1..2, &Task.async(fn -> &1;
-      Process.sleep(2)
       Poison.decode! @json
     end))
     Task.yield_many(tasks, 10)
