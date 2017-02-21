@@ -65,6 +65,24 @@ defmodule RateLimit.Router do
     end
 
   end
+  get "/simple_limiter" do
+    start_time  = System.system_time(:microseconds)
+    limited = if RateLimit.SimpleLimiter.check_limit do
+      true
+    else
+      do_stuff
+      RateLimit.SimpleLimiter.limit
+    end
+
+    RateLimit.Stats.increment("simple", 1, [sample_rate: 0.05, tags: ["limited:#{limited}"]] )
+    RateLimit.Stats.histogram("simple.t", System.system_time(:microseconds) - start_time, sample_rate: 0.05 )
+    if limited do
+      send_resp(conn, 429, "")
+    else
+      send_resp(conn, 204,"")
+    end
+
+  end
   get "/gen_stage" do
 
   end
