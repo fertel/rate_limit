@@ -86,6 +86,9 @@ defmodule RateLimit.Router do
   get "/gen_stage" do
 
   end
+  get "/" do 
+    send_resp(conn, 204,"")
+  end
   #todo: gen_Stage leaky bucket
   def do_stuff do
     tasks = Enum.map(1..2, &Task.async(fn -> &1;
