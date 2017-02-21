@@ -52,7 +52,7 @@ defmodule RateLimit.Controller do
     node_count = :pg2.get_members(__MODULE__) |> length #the total number of controllers in the cluster
     Enum.each(buckets, fn {key,count} ->
       if count do
-        RateLimit.Limiter.start_limiters(key, count)
+        RateLimit.Limiter.start_limiters(key, count, length(:pg2.get_members(__MODULE__)) )
       else
         RateLimit.Limiter.stop(key)
       end
